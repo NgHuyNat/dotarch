@@ -8,18 +8,15 @@ echo "========================================"
 echo "    Dotfiles Installation Script"
 echo "========================================"
 
-# 1. Install packages
+# 1. Install end-4 base dotfiles
 echo ""
-echo "==> Step 1: Installing packages..."
-if [ -x "$DOTFILES_DIR/scripts/install-packages.sh" ]; then
-    "$DOTFILES_DIR/scripts/install-packages.sh"
-else
-    bash "$DOTFILES_DIR/scripts/install-packages.sh"
-fi
+echo "==> Step 1: Installing end-4 base dotfiles..."
+echo "Please follow the interactive prompts for the initial setup."
+bash <(curl -s https://ii.clsty.link/get)
 
 # 2. Setup symlinks for .config
 echo ""
-echo "==> Step 2: Setting up .config symlinks..."
+echo "==> Step 2: Applying custom .config symlinks..."
 mkdir -p "$HOME/.config"
 
 for config_dir in "$DOTFILES_DIR/.config"/*; do
@@ -49,7 +46,7 @@ done
 
 # 3. Setup symlinks for home directory
 echo ""
-echo "==> Step 3: Setting up home directory symlinks..."
+echo "==> Step 3: Applying custom home directory symlinks..."
 
 # Find all items in the dotfiles/home directory (including hidden ones)
 shopt -s dotglob
@@ -78,6 +75,15 @@ for home_file in "$DOTFILES_DIR/home"/*; do
     echo " [LINK] Created symlink for $file_name"
 done
 shopt -u dotglob
+
+# 4. Install extra packages
+echo ""
+echo "==> Step 4: Installing extra custom packages..."
+if [ -x "$DOTFILES_DIR/scripts/install-packages.sh" ]; then
+    "$DOTFILES_DIR/scripts/install-packages.sh"
+else
+    bash "$DOTFILES_DIR/scripts/install-packages.sh"
+fi
 
 echo ""
 echo "========================================"
