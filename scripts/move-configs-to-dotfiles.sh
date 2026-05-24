@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-home="/home/nghuytan"
+home="$HOME"
 dotfiles="$home/.dotfiles"
 
 config_dirs=(

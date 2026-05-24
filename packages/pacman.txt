@@ -305,3 +305,4 @@ xorg-xrandr
 xsettingsd
 xterm
 zsh
+zram-generator

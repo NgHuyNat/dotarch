@@ -8,6 +8,19 @@ echo "========================================"
 echo "    Dotfiles Installation Script"
 echo "========================================"
 
+# 0. Check for AUR Helper
+echo ""
+echo "==> Step 0: Checking for AUR helper..."
+if ! command -v yay >/dev/null 2>&1 && ! command -v paru >/dev/null 2>&1; then
+    echo "AUR helper not found. Installing yay..."
+    sudo pacman -S --needed --noconfirm base-devel git
+    git clone https://aur.archlinux.org/yay.git /tmp/yay
+    cd /tmp/yay && makepkg -si --noconfirm
+    cd "$DOTFILES_DIR"
+else
+    echo " [OK] AUR helper is already installed."
+fi
+
 # 1. Install end-4 base dotfiles
 echo ""
 echo "==> Step 1: Installing end-4 base dotfiles..."
@@ -83,6 +96,18 @@ if [ -x "$DOTFILES_DIR/scripts/install-packages.sh" ]; then
     "$DOTFILES_DIR/scripts/install-packages.sh"
 else
     bash "$DOTFILES_DIR/scripts/install-packages.sh"
+fi
+
+# 5. Apply system configurations
+echo ""
+echo "==> Step 5: Applying system configurations (ZRAM)..."
+if [ -f "$DOTFILES_DIR/etc/systemd/zram-generator.conf" ]; then
+    sudo mkdir -p /etc/systemd/
+    sudo cp "$DOTFILES_DIR/etc/systemd/zram-generator.conf" /etc/systemd/zram-generator.conf
+    sudo systemctl daemon-reload
+    # We don't start it immediately to avoid conflicts if already running, 
+    # it will work after reboot or manual start.
+    echo " [OK] ZRAM configuration applied to /etc/systemd/zram-generator.conf"
 fi
 
 echo ""

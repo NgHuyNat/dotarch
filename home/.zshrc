@@ -56,6 +56,9 @@ ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/home/nghuytan/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
